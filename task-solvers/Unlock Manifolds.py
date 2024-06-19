@@ -18,8 +18,10 @@ dimensions[3] = round(dimensions[3] / 3.1)
 pos = None
 for i in range(1, 11):
     while pos is None:
-        pos = pyautogui.locateCenterOnScreen(f"{get_dir()}\\task-solvers\\cv2-templates\\Unlock Manifolds resized\\{i}.png", confidence=0.8, region=dimensions, grayscale=True)
-        if keyboard.is_pressed('`'):
+        pos = pyautogui.locateCenterOnScreen(f"{get_dir()}\\task-solvers\\cv2-templates\\Unlock Manifolds resized\\{i}.png", confidence=0.5, region=dimensions, grayscale=True)
+        print(f"pos {pos}")
+        if keyboard.is_pressed('1'):
             raise SystemExit(0)
-    pyautogui.click(pos)
+    print(f"clicking")
+    pyautogui.click(pos.x, pos.y)
     pos = None

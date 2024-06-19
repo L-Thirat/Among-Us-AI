@@ -10,9 +10,11 @@ click_use()
 time.sleep(0.8)
 
 dimensions = get_dimensions()
-
-x = dimensions[0] + round(dimensions[2] / 1.52)
+print(dimensions)
+x = dimensions[0] + round(dimensions[2] / 1.52) #+ 30
 y = dimensions[1] + round(dimensions[3] / 1.16)
+print(x)
+print(y)
 pyautogui.click((x,y))
 
 click_close()

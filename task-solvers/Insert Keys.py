@@ -8,7 +8,7 @@ time.sleep(0.3)
 
 dimensions = get_dimensions()
 
-#get_screen_ratio(dimensions) #2.08 10.5
+# get_screen_ratio(dimensions) #2.08 10.5
 
 x = round(dimensions[0] + dimensions[2] / 2.08)
 y = round(dimensions[1] + dimensions[3] / 17.14)
@@ -26,14 +26,16 @@ while not is_task_done("Insert Keys"):
     for i in range(3):
         for j in range(5):
             for q in range(4):
-                pixel = pyautogui.pixel(x + i*x_offset, y2 + y_offset*j + q)
+                pixel = pyautogui.pixel(x + i * x_offset, y2 + y_offset * j + q)
                 if pixel[0] > 200:
-                    pyautogui.moveTo(dimensions[0] + round(dimensions[2] / 4.25), dimensions[1] + round(dimensions[3] / 1.49))
-                    pyautogui.dragTo(x + i*x_offset, y2 + j*y_offset + 20, 0.7)
-                    pyautogui.dragTo(x + i*x_offset + round(dimensions[2] / 9.6), y2 + j*y_offset + round(dimensions[3] / 11), 0.3)
+                    pyautogui.moveTo(dimensions[0] + round(dimensions[2] / 4.25),
+                                     dimensions[1] + round(dimensions[3] / 1.49))
+                    pyautogui.dragTo(x + i * x_offset, y2 + j * y_offset + 20, 0.7)
+                    pyautogui.dragTo(x + i * x_offset + round(dimensions[2] / 9.6),
+                                     y2 + j * y_offset + round(dimensions[3] / 11), 0.3)
                     raise SystemExit(0)
-                
-    if keyboard.is_pressed('`'):
+
+    if keyboard.is_pressed('1'):
         raise SystemExit(0)
 
 # 206 130 24

@@ -9,7 +9,7 @@ import re
 click_use()
 time.sleep(0.8)
 
-pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+pytesseract.pytesseract.tesseract_cmd = r'C:\Users\Terus\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
 dimensions = get_dimensions()
 
@@ -26,6 +26,7 @@ s2 = screenshot.rotate(335, Image.NEAREST, expand = 1).convert('L')
 
 # get text from image
 text = pytesseract.image_to_string(s2)
+print(f"text: {text}")
 try:
     nums = re.findall(r'\b\d+\b', text)[0]
 except IndexError:

@@ -14,7 +14,7 @@ dimensions = get_dimensions()
 data = getGameData()
 if data["task_locations"][data["tasks"].index("Divert Power")] == "Electrical":
     x = dimensions[0] + round(dimensions[2] / 3.26)
-    y = dimensions[1] + round(dimensions[3] / 1.415)
+    y = dimensions[1] + round(dimensions[3] / 1.415) #todo
 
     x_offset = round(dimensions[2] / 19.7)
 

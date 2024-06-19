@@ -55,10 +55,11 @@ while not is_task_done("Chart Course"):
 
     for i in range(len(x_points)):
         for y in range(screenshot.height):
+            print(x_points, y)
             pixel = screenshot.getpixel((x_points[i] - s_dimensions[0], y))
             if pixel[0] < 38 and pixel[0] > 32 and pixel[1] < 113 and pixel[1] > 108 and pixel[2] < 163 and pixel[2] > 158:
                 if i == 3:
-                    y_offset = 30
+                    y_offset = 10
                 if exit:
                     pyautogui.dragTo(x_points[i] + 15, s_dimensions[1] + y + y_offset, duration=0.2, tween=pyautogui.easeOutQuad)
                 else:

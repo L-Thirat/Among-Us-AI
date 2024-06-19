@@ -5,6 +5,7 @@ import networkx as nx
 from solver import *
 from random import choice
 import keyboard
+from config import MODE, DEAD_ORDERS
 
 inspect_sample_flag : bool = False
 
@@ -54,15 +55,36 @@ def printConstantTaskPositions():
     except KeyboardInterrupt:
         pass
 
-def idle(G):
+def hunt(G):
+    """Hunting living people"""
+    data = getGameData()
+
+    alive_players = {color: pos for color, pos in data['nearbyPlayers'].items() if not data['playersDead'][color]}
+    # for color, pos in data['nearbyPlayers'].items():
+        # if data['playersDead'][color]:
+        #     DEAD_ORDERS.append(color)
+        # else:
+        # alive_players[color] = pos
+    nearest_player_pos = get_nearest_alive_players(G, alive_players)
+    node_nearest_pos = get_nearest_node(G, nearest_player_pos)
+    nearest = move_to_nearest_node(graph)
+    move(list(nx.shortest_path(G, nearest, node_nearest_pos, weight="weight")), G)
+
+def idle(G, asd=None):
     """Player just runs to random task locations"""
     move_list = get_idle_list()
     can_vote_flag : bool = False
     while len(move_list) > 0:
-        if not isInGame() or keyboard.is_pressed('`'):
+        if not isInGame() or keyboard.is_pressed('1'):
             break
         nearest = move_to_nearest_node(graph)
+        print("graph")
+        print(graph)
+        print("nearest")
+        print(nearest)
+        asd
         destination = choice(move_list)
+        print(move_list)
         urgent = is_urgent_task()
         data = getGameData()
         if "Fix Lights" in data["tasks"] and urgent is None and not isImpostor():
@@ -75,7 +97,9 @@ def idle(G):
             destination = tuple(dict[urgent[0]][urgent[1]])
         move_return_code = move(list(nx.shortest_path(G, nearest, destination, weight="weight")), G)
         if isImpostor():
-            solve_task(get_nearest_task()[0])
+            print("@@@KILL")
+            # solve_task(get_nearest_task()[0])
+            solve_task("kill")
             urgent = is_urgent_task()
         if urgent is not None and move_return_code == 0:
             urgent = is_urgent_task()
@@ -117,7 +141,7 @@ def move_and_complete_tasks(G, move_list, tasks):
     # While we still have tasks to do
     while len(move_list) > 0:
         # exit case
-        if not isInGame() or keyboard.is_pressed('`'):
+        if not isInGame() or keyboard.is_pressed('1'):
             break
 
         # move to next task
@@ -189,7 +213,7 @@ def move_and_complete_tasks(G, move_list, tasks):
         # If meeting was called (also include inspect sample case)
         if return_code == 1 or return_code == 2:
             # exit case
-            if keyboard.is_pressed('`'):
+            if keyboard.is_pressed('1'):
                 break
 
             if return_code == 2:
@@ -241,12 +265,13 @@ def move_and_complete_tasks(G, move_list, tasks):
         # Remove completed task from tasks and move list
         for i in range(len(tasks)):
             try:
-                tasks[i].pop(index) 
+                tasks[i].pop(index)
             except IndexError:
                 continue
     return 0
 
 def main(G) -> int:
+    print(f"isImpostor(): {isImpostor()}")
     # Get tasks
     tasks = get_task_list()
 
@@ -268,17 +293,21 @@ def main(G) -> int:
 
     ret = 0
     while True:
-        if isInGame() and not keyboard.is_pressed('`'):
+        if isInGame() and not keyboard.is_pressed('1'):
             # Begin gameplay loop
             if not isImpostor():
                 ret = move_and_complete_tasks(G, move_list, tasks)
             if dead != isDead() or ret == -1:
                 return -1
             # Idly move around
-            idle(G)
+            if (MODE == "hide"):
+                hunt(G)
+            else:
+                idle(G)
             if dead != isDead():
                 return -1
         else:
+            print(f"DEAD_ORDERS: {DEAD_ORDERS}")
             return 0
 
 if __name__ == "__main__":
@@ -304,7 +333,7 @@ if __name__ == "__main__":
 
     while True:
         ret = main(G)
-        if keyboard.is_pressed('`'):
+        if keyboard.is_pressed('1'):
             break
         if ret == -1:
             print("restarting main...")
